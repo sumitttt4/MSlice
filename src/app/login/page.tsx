@@ -5,7 +5,7 @@ export const dynamic = "force-dynamic";
 import * as React from "react"
 import Image from "next/image"
 import Link from "next/link"
-import { Loader2, ArrowLeft } from "lucide-react"
+import { Loader2, ArrowLeft, Mail, Lock } from "lucide-react"
 import { toast } from "sonner"
 import { createClient } from "@/utils/supabase/client"
 
@@ -13,10 +13,6 @@ import { Button } from "@/components/ui/button"
 import {
     Card,
     CardContent,
-    CardDescription,
-    CardFooter,
-    CardHeader,
-    CardTitle,
 } from "@/components/ui/card"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
@@ -80,43 +76,42 @@ export default function LoginPage() {
     }
 
     return (
-        <div className="min-h-screen bg-background flex flex-col items-center justify-center p-4 relative overflow-hidden">
-            {/* Background Accents */}
-            <div className="absolute top-0 right-0 w-[500px] h-[500px] bg-primary/5 rounded-full blur-3xl -translate-y-1/2 translate-x-1/3 pointer-events-none" />
-            <div className="absolute bottom-0 left-0 w-[500px] h-[500px] bg-secondary/20 rounded-full blur-3xl translate-y-1/3 -translate-x-1/3 pointer-events-none" />
+        <div className="min-h-screen bg-[#020617] flex flex-col items-center justify-center p-4 relative selection:bg-emerald-500/20 font-sans">
+            {/* Minimal Background Layer */}
+            <div className="absolute inset-0 bg-[url('https://grainy-gradients.vercel.app/noise.svg')] opacity-[0.03] pointer-events-none" />
 
-            <div className="w-full max-w-[400px] relative z-10 animate-in fade-in slide-in-from-bottom-4 duration-500">
-                <div className="mb-8 text-center">
-                    <Link href="/" className="inline-flex items-center gap-2 group mb-6">
-                        <div className="relative h-8 w-8">
-                            <Image src="/logo.png" alt="Mslice Logo" fill className="object-contain" />
+            <div className="w-full max-w-[400px] relative z-10 animate-in fade-in slide-in-from-bottom-4 duration-700">
+                <div className="mb-10 text-center">
+                    <Link href="/" className="inline-flex items-center gap-2 group">
+                        <div className="relative h-6 w-6 rounded bg-[#10B981] p-1 flex items-center justify-center">
+                            <Image src="/logo.png" alt="Mslice Logo" fill className="object-contain invert brightness-0" />
                         </div>
-                        <span className="text-xl font-bold tracking-tight text-foreground">Mslice</span>
+                        <span className="text-[18px] font-bold tracking-tight text-[#F8FAFC]">Mslice</span>
                     </Link>
                 </div>
 
-                <Card className="border border-border/60 shadow-xl shadow-primary/5 bg-card/95 backdrop-blur-sm">
-                    <CardHeader className="space-y-1 text-center pb-8">
-                        <CardTitle className="text-2xl font-bold tracking-tight">
+                <Card className="border-[#0F172A] bg-[#020617] rounded-3xl shadow-2xl overflow-hidden p-8 space-y-8">
+                    <div className="text-center space-y-2">
+                        <h1 className="text-[24px] font-bold tracking-tight text-[#F8FAFC]">
                             {isSignUp ? "Create account" : "Welcome back"}
-                        </CardTitle>
-                        <CardDescription className="text-base">
-                            {isSignUp ? "Sign up to get started" : "Sign in to your secure dashboard"}
-                        </CardDescription>
-                    </CardHeader>
-                    <CardContent className="space-y-6">
+                        </h1>
+                        <p className="text-[14px] font-normal text-[#94A3B8]">
+                            {isSignUp ? "Sign up to start your credit journey" : "Sign in to your secure dashboard"}
+                        </p>
+                    </div>
 
-                        {/* Google Login - Primary */}
+                    <div className="space-y-6">
+                        {/* Google Login */}
                         <Button
                             variant="outline"
-                            className="w-full h-12 text-base font-medium border-border/60 hover:bg-secondary/50 hover:text-foreground hover:border-border transition-all relative overflow-hidden"
+                            className="w-full h-12 border-[#0F172A] bg-transparent hover:bg-[#F8FAFC]/5 text-[#F8FAFC] text-[14px] font-semibold rounded-xl flex items-center justify-center gap-3 transition-all"
                             onClick={handleGoogleLogin}
                             disabled={isLoading}
                         >
                             {isLoading ? (
-                                <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                                <Loader2 className="h-4 w-4 animate-spin text-[#10B981]" />
                             ) : (
-                                <svg className="mr-2 h-5 w-5" viewBox="0 0 24 24">
+                                <svg className="h-4 w-4" viewBox="0 0 24 24">
                                     <path
                                         d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"
                                         fill="#4285F4"
@@ -140,66 +135,74 @@ export default function LoginPage() {
 
                         <div className="relative">
                             <div className="absolute inset-0 flex items-center">
-                                <span className="w-full border-t border-border/60" />
+                                <span className="w-full border-t border-[#0F172A]" />
                             </div>
-                            <div className="relative flex justify-center text-xs uppercase">
-                                <span className="bg-card px-2 text-muted-foreground">Or continue with email</span>
+                            <div className="relative flex justify-center text-[12px] uppercase tracking-widest">
+                                <span className="bg-[#020617] px-3 text-[#64748B]">Or email protocol</span>
                             </div>
                         </div>
 
-                        {/* Email Login/SignUp Form */}
+                        {/* Email Auth Form */}
                         <form onSubmit={handleEmailAuth} className="space-y-4">
                             <div className="space-y-2">
-                                <Label htmlFor="email">Email</Label>
-                                <Input
-                                    id="email"
-                                    placeholder="name@example.com"
-                                    type="email"
-                                    value={email}
-                                    onChange={(e) => setEmail(e.target.value)}
-                                    className="h-11"
-                                    required
-                                />
+                                <Label htmlFor="email" className="text-[12px] font-semibold text-[#94A3B8] uppercase tracking-wider">Identifiers</Label>
+                                <div className="relative">
+                                    <Mail className="absolute left-3 top-3 h-4 w-4 text-[#64748B]" />
+                                    <Input
+                                        id="email"
+                                        placeholder="name@domain.com"
+                                        type="email"
+                                        value={email}
+                                        onChange={(e) => setEmail(e.target.value)}
+                                        className="h-11 pl-10 border-[#0F172A] bg-[#0F172A]/30 text-[#F8FAFC] placeholder:text-[#64748B] rounded-xl focus-visible:ring-[#10B981]"
+                                        required
+                                    />
+                                </div>
                             </div>
                             <div className="space-y-2">
                                 <div className="flex items-center justify-between">
-                                    <Label htmlFor="password">Password</Label>
-                                    {!isSignUp && <Link href="#" className="text-xs text-primary hover:underline">Forgot password?</Link>}
+                                    <Label htmlFor="password" className="text-[12px] font-semibold text-[#94A3B8] uppercase tracking-wider">Access Key</Label>
+                                    {!isSignUp && <Link href="#" className="text-[12px] text-[#10B981] hover:underline">Revive Key?</Link>}
                                 </div>
-                                <Input
-                                    id="password"
-                                    type="password"
-                                    value={password}
-                                    onChange={(e) => setPassword(e.target.value)}
-                                    className="h-11"
-                                    required
-                                />
+                                <div className="relative">
+                                    <Lock className="absolute left-3 top-3 h-4 w-4 text-[#64748B]" />
+                                    <Input
+                                        id="password"
+                                        type="password"
+                                        placeholder="••••••••"
+                                        value={password}
+                                        onChange={(e) => setPassword(e.target.value)}
+                                        className="h-11 pl-10 border-[#0F172A] bg-[#0F172A]/30 text-[#F8FAFC] placeholder:text-[#64748B] rounded-xl focus-visible:ring-[#10B981]"
+                                        required
+                                    />
+                                </div>
                             </div>
-                            <Button className="w-full h-11 text-base shadow-sm" type="submit" disabled={isLoading}>
+                            <Button className="w-full h-12 bg-[#10B981] hover:bg-[#059669] text-[#020617] text-[14px] font-bold rounded-xl border-0 transition-all shadow-lg shadow-[#10B981]/10" type="submit" disabled={isLoading}>
                                 {isLoading && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
-                                {isSignUp ? "Sign Up" : "Sign In"}
+                                {isSignUp ? "Initialize Account" : "Access Vault"}
                             </Button>
                         </form>
-                    </CardContent>
-                    <CardFooter className="flex flex-col gap-4 text-center pb-8 border-t border-border/40 pt-6 bg-secondary/10">
-                        <div className="text-sm text-muted-foreground">
-                            {isSignUp ? "Already have an account?" : "Don&apos;t have an account?"}{" "}
+                    </div>
+
+                    <div className="pt-6 border-t border-[#0F172A] text-center space-y-4">
+                        <div className="text-[14px] text-[#94A3B8]">
+                            {isSignUp ? "Already have a vault?" : "New to Mslice?"}{" "}
                             <button
                                 onClick={() => setIsSignUp(!isSignUp)}
-                                className="text-primary font-medium hover:underline focus:outline-none"
+                                className="text-[#10B981] font-bold hover:underline"
                             >
                                 {isSignUp ? "Sign in" : "Sign up"}
                             </button>
                         </div>
-                        <p className="text-xs text-muted-foreground max-w-xs mx-auto">
-                            By clicking continue, you agree to our <Link href="#" className="underline">Terms</Link> and <Link href="#" className="underline">Privacy Policy</Link>.
+                        <p className="text-[12px] text-[#64748B] leading-relaxed">
+                            Secured with institutional grade AES-256 encryption. By continuing, you agree to our <Link href="#" className="text-[#CBD5E1] underline">Protocol Terms</Link>.
                         </p>
-                    </CardFooter>
+                    </div>
                 </Card>
 
                 <div className="mt-8 text-center">
-                    <Link href="/" className="inline-flex items-center text-sm text-muted-foreground hover:text-foreground transition-colors">
-                        <ArrowLeft className="mr-2 h-4 w-4" /> Back to Home
+                    <Link href="/" className="inline-flex items-center text-[12px] font-semibold text-[#64748B] hover:text-[#F8FAFC] transition-colors uppercase tracking-widest">
+                        <ArrowLeft className="mr-2 h-3 w-3" /> System Exit
                     </Link>
                 </div>
             </div>
