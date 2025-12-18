@@ -5,7 +5,7 @@ export const dynamic = "force-dynamic";
 import * as React from "react"
 import Image from "next/image"
 import Link from "next/link"
-import { Loader2, Mail, Lock, AlertCircle, ArrowLeft } from "lucide-react"
+import { Loader2, ArrowLeft } from "lucide-react"
 import { toast } from "sonner"
 import { createClient } from "@/utils/supabase/client"
 

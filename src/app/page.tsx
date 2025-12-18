@@ -1,4 +1,3 @@
-```javascript
 "use client"
 
 export const dynamic = "force-dynamic";
@@ -53,8 +52,6 @@ export default function LandingPage() {
         return (p * monthlyRate * Math.pow(1 + monthlyRate, n)) / (Math.pow(1 + monthlyRate, n) - 1)
     }, [loanAmount, tenure, monthlyRate])
 
-    const totalRepayment = emi * tenure[0]
-
     return (
         <div className="min-h-screen w-full bg-[#020617] relative selection:bg-emerald-500/20 text-slate-50 font-sans overflow-x-hidden">
             {/* Mesh Gradient & Grain Background */}
@@ -68,13 +65,13 @@ export default function LandingPage() {
             <div
                 className="absolute inset-0 z-0 pointer-events-none"
                 style={{
-                    backgroundImage: `radial - gradient(circle 800px at 50 % 400px, rgba(16, 185, 129, 0.15), transparent)`,
+                    backgroundImage: `radial-gradient(circle 800px at 50% 400px, rgba(16,185,129,0.15), transparent)`,
                 }}
             />
 
             <div className="relative z-10">
                 {/* Navigation - Pill Design */}
-                <motion.div 
+                <motion.div
                     style={{ backgroundColor: headerBg }}
                     className="fixed top-0 left-0 right-0 z-50 flex justify-center pt-6 px-4"
                 >
@@ -92,9 +89,9 @@ export default function LandingPage() {
                         {/* Desktop Nav Links */}
                         <div className="hidden md:flex items-center gap-10">
                             {['How it Works', 'Rates', 'Security'].map((item) => (
-                                <Link 
+                                <Link
                                     key={item}
-                                    href={`#${ item.toLowerCase().replace(/\s+/g, '-') } `} 
+                                    href={`#${item.toLowerCase().replace(/\s+/g, '-')}`}
                                     className="text-sm font-medium text-slate-400 hover:text-white transition-colors relative group"
                                 >
                                     {item}
@@ -190,12 +187,12 @@ export default function LandingPage() {
                                 transition={{ duration: 0.8, delay: 0.2 }}
                                 className="relative"
                             >
-                                {/* Decorative Glowbehind card */}
+                                {/* Decorative Glow behind card */}
                                 <div className="absolute -inset-1 bg-gradient-to-r from-emerald-500 to-teal-500 rounded-[2.5rem] blur-2xl opacity-10 group-hover:opacity-20 transition duration-1000 group-hover:duration-200" />
-                                
+
                                 <Card className="relative border-white/[0.08] shadow-[0_32px_64px_-16px_rgba(0,0,0,0.4)] backdrop-blur-2xl bg-white/[0.02] rounded-[2rem] overflow-hidden">
                                     <div className="absolute top-0 left-0 right-0 h-1 bg-gradient-to-r from-transparent via-emerald-500/50 to-transparent" />
-                                    
+
                                     <CardHeader className="border-b border-white/[0.05] p-8">
                                         <div className="flex justify-between items-start">
                                             <div>
@@ -207,7 +204,7 @@ export default function LandingPage() {
                                             </div>
                                         </div>
                                     </CardHeader>
-                                    
+
                                     <CardContent className="space-y-10 p-8">
                                         {/* Amount */}
                                         <div className="space-y-6">
@@ -260,7 +257,7 @@ export default function LandingPage() {
                                             </div>
                                         </div>
                                     </CardContent>
-                                    
+
                                     <CardFooter className="p-8 pt-0">
                                         <Link href="/login" className="w-full">
                                             <Button className="w-full h-16 text-lg font-black bg-white text-emerald-950 hover:bg-slate-100 border-0 rounded-2xl shadow-xl transition-all hover:scale-[1.01]">
@@ -280,7 +277,7 @@ export default function LandingPage() {
                         <div className="flex flex-col md:flex-row justify-between items-end gap-8 mb-20">
                             <div className="max-w-xl space-y-4">
                                 <h2 className="text-4xl md:text-5xl font-black tracking-tight text-white leading-tight">Institutional <span className="text-emerald-500 italic">Security.</span><br />Radical Clarity.</h2>
-                                <p className="text-slate-400 text-lg">We don't do complex. We do precise. Every term is explained, every rupee accounted for.</p>
+                                <p className="text-slate-400 text-lg">We don&apos;t do complex. We do precise. Every term is explained, every rupee accounted for.</p>
                             </div>
                             <Link href="/login">
                                 <Button variant="link" className="text-emerald-400 font-bold p-0 text-lg group">
@@ -293,10 +290,10 @@ export default function LandingPage() {
                             {[
                                 { title: "Simple Fixed APR", icon: Fingerprint, color: "text-emerald-400", bg: "bg-emerald-500/10", desc: "No dynamic algorithms. You get a flat 16% per year clearly calculated on the reducing balance." },
                                 { title: "Capped Penalties", icon: AlertCircle, color: "text-amber-400", bg: "bg-amber-500/10", desc: "Life happens. We charge a one-time ₹300 fee for late payments. No compounding interest on penalties." },
-                                { title: "Instant Liquidations", icon: Clock, color: "text-blue-400", bg: "bg-blue-500/10", desc: "Close your loan early at zero cost. We don't believe in penalizing you for being responsible." }
+                                { title: "Instant Liquidations", icon: Clock, color: "text-blue-400", bg: "bg-blue-500/10", desc: "Close your loan early at zero cost. We don&apos;t believe in penalizing you for being responsible." }
                             ].map((feature, i) => (
                                 <Card key={i} className="border-white/[0.05] bg-white/[0.02] hover:bg-white/[0.04] transition-all p-8 rounded-[2rem] group cursor-default">
-                                    <div className={`mb - 8 h - 16 w - 16 rounded - 2xl ${ feature.bg } flex items - center justify - center ${ feature.color } border border - white / 5 transition - transform group - hover: rotate - 6`}>
+                                    <div className={cn("mb-8 h-16 w-16 rounded-2xl flex items-center justify-center border border-white/5 transition-transform group-hover:rotate-6", feature.bg, feature.color)}>
                                         <feature.icon className="h-8 w-8" />
                                     </div>
                                     <h3 className="text-2xl font-bold text-white mb-4">{feature.title}</h3>
@@ -320,7 +317,7 @@ export default function LandingPage() {
                                 <div className="space-y-12 relative">
                                     {/* Visual line connecting steps */}
                                     <div className="absolute left-8 top-8 bottom-8 w-px bg-gradient-to-b from-emerald-500/50 via-white/5 to-transparent hidden md:block" />
-                                    
+
                                     {[
                                         { title: "One-Tap Auth", desc: "Link your bank and verify identity in 60 seconds. No physical documents required.", icon: User },
                                         { title: "Pick Your Slice", desc: "Select any amount from ₹5,000 to ₹2,00,000. Real-time disbursement after approval.", icon: Fingerprint },
@@ -339,7 +336,7 @@ export default function LandingPage() {
                                             </div>
                                             <div className="py-2">
                                                 <h3 className="text-2xl font-bold text-white mb-3 flex items-center gap-3">
-                                                    {step.title} 
+                                                    {step.title}
                                                     <span className="h-px w-8 bg-emerald-500/20 group-hover:w-16 transition-all duration-500" />
                                                 </h3>
                                                 <p className="text-slate-400 leading-relaxed text-lg">{step.desc}</p>
@@ -352,11 +349,11 @@ export default function LandingPage() {
                             {/* App Visual Mockup */}
                             <div className="relative h-[700px] w-full bg-gradient-to-br from-emerald-500/10 to-teal-500/5 rounded-[3rem] border border-white/[0.05] flex items-center justify-center overflow-hidden">
                                 <div className="absolute inset-0 bg-[url('https://patterncraft.fun/img/grain_gradient.png')] opacity-20" />
-                                
+
                                 {/* Phone Container */}
                                 <div className="w-[320px] h-[640px] bg-[#020617] border-[12px] border-slate-900 rounded-[3.5rem] shadow-3xl relative overflow-hidden flex flex-col z-10 translate-y-12 ring-2 ring-white/10">
                                     <div className="h-8 w-36 bg-slate-900 mx-auto rounded-b-[1.5rem] absolute top-0 left-1/2 -translate-x-1/2 z-20" />
-                                    
+
                                     <div className="p-8 pt-16 space-y-8 bg-slate-950 flex-1 flex flex-col">
                                         <div className="flex items-center justify-between">
                                             <div className="h-10 w-10 bg-emerald-500/10 rounded-2xl border border-emerald-500/20 flex items-center justify-center">
@@ -393,12 +390,12 @@ export default function LandingPage() {
                     <div className="container mx-auto px-4 md:px-6">
                         <div className="bg-gradient-to-br from-emerald-500/5 to-transparent rounded-[3rem] border border-white/[0.03] p-12 md:p-20 relative overflow-hidden text-center">
                             <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] bg-emerald-500/5 rounded-full blur-[120px] pointer-events-none" />
-                            
+
                             <div className="relative z-10 space-y-8 max-w-3xl mx-auto">
                                 <Lock className="h-16 w-16 mx-auto text-emerald-500 mb-4 opacity-80" />
                                 <h2 className="text-4xl font-black text-white">Fortified by bank-grade <br /> encryption protocols.</h2>
-                                <p className="text-xl text-slate-400 italic">"Security isn't a feature, it's our foundation."</p>
-                                
+                                <p className="text-xl text-slate-400 italic">&quot;Security isn&apos;t a feature, it&apos;s our foundation.&quot;</p>
+
                                 <div className="grid grid-cols-2 md:grid-cols-4 gap-6 pt-8">
                                     {['AES-256', 'SSL-v3', 'PCI-DSS', 'SOC-2'].map((cert) => (
                                         <div key={cert} className="py-4 px-6 bg-white/5 rounded-2xl border border-white/10 text-white font-black tracking-widest text-xs uppercase opacity-60 hover:opacity-100 transition-opacity">

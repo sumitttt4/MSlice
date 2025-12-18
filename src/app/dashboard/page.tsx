@@ -3,13 +3,13 @@
 export const dynamic = "force-dynamic";
 
 import * as React from "react"
-import { addMonths, format, isAfter, isBefore, isSameDay, setDate, startOfDay } from "date-fns"
+import { addMonths, format, isBefore, isSameDay, setDate, startOfDay } from "date-fns"
 import Image from "next/image"
+import { motion } from "framer-motion"
 import {
   Bell,
   CreditCard,
   DollarSign,
-  LayoutDashboard,
   User,
   LogOut,
   TrendingUp,
@@ -31,8 +31,6 @@ import { Button } from "@/components/ui/button"
 import {
   Card,
   CardContent,
-  CardDescription,
-  CardHeader,
   CardTitle,
 } from "@/components/ui/card"
 import { Slider } from "@/components/ui/slider"
@@ -53,8 +51,8 @@ const MONTHLY_RATE = INTEREST_RATE / 12
 const TODAY = new Date(2025, 11, 18) // Dec 18, 2025
 
 export default function Dashboard() {
-  const [loanAmount, setLoanAmount] = React.useState([50000]) // Default 50k
-  const [tenure, setTenure] = React.useState([12]) // Default 12 months
+  const [loanAmount] = React.useState([50000]) // Default 50k
+  const [tenure] = React.useState([12]) // Default 12 months
   const [simulateMonthsPassed, setSimulateMonthsPassed] = React.useState([0])
 
   const router = useRouter()
@@ -280,7 +278,7 @@ export default function Dashboard() {
                           <p className="text-xl font-black text-white">{format(schedule.find(s => s.status !== 'Paid')?.dueDate || TODAY, "MMM dd, yyyy")}</p>
                         </div>
                       </div>
-                      <p className="text-[10px] font-bold text-slate-500 italic">"Keep paying on time to grow your MSCORE."</p>
+                      <p className="text-[10px] font-bold text-slate-500 italic">&quot;Keep paying on time to grow your MSCORE.&quot;</p>
                     </div>
                   </div>
                   <div className="p-8 bg-white/[0.04] border border-white/[0.05] rounded-[2rem] flex items-center justify-between">
@@ -438,7 +436,7 @@ export default function Dashboard() {
                 <Shield className="h-3 w-3" /> E2E INSTANCE: 92.10.8A
               </div>
               <p className="text-[10px] text-slate-800 font-bold max-w-[200px] mx-auto italic">
-                "All communications within Mslice Vault are monitored for your security."
+                &quot;All communications within Mslice Vault are monitored for your security.&quot;
               </p>
             </div>
           </div>
