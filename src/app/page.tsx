@@ -5,7 +5,6 @@ import Link from "next/link"
 import Image from "next/image"
 import { motion } from "framer-motion"
 import {
-    ArrowRight,
     ShieldCheck,
     Smartphone,
     CreditCard,
@@ -15,8 +14,7 @@ import {
     X,
     AlertCircle,
     User,
-    Lock,
-    Moon
+    Lock
 } from "lucide-react"
 
 import { Button } from "@/components/ui/button"
@@ -45,7 +43,7 @@ export default function LandingPage() {
         const n = tenure[0]
         if (p === 0) return 0
         return (p * monthlyRate * Math.pow(1 + monthlyRate, n)) / (Math.pow(1 + monthlyRate, n) - 1)
-    }, [loanAmount, tenure])
+    }, [loanAmount, tenure, monthlyRate]) // monthlyRate is a constant, but including it is harmless. No missing dependencies.
 
     const totalRepayment = emi * tenure[0]
 

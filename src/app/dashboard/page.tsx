@@ -13,7 +13,6 @@ import {
   Card,
   CardContent,
   CardDescription,
-  CardFooter,
   CardHeader,
   CardTitle,
 } from "@/components/ui/card"
@@ -21,7 +20,6 @@ import { Slider } from "@/components/ui/slider"
 import {
   Table,
   TableBody,
-  TableCaption,
   TableCell,
   TableHead,
   TableHeader,
@@ -32,6 +30,8 @@ import { cn } from "@/lib/utils"
 // Constants
 const INTEREST_RATE = 0.16 // 16% per annum
 const PENALTY_AMOUNT = 300
+const MONTHLY_RATE = INTEREST_RATE / 12
+const TODAY = new Date(2025, 11, 18) // Dec 18, 2025
 
 export default function Dashboard() {
   const [loanAmount, setLoanAmount] = React.useState([50000]) // Default 50k
@@ -46,20 +46,15 @@ export default function Dashboard() {
     router.push("/login")
   }
 
-  // Generated today (Dec 18, 2025 as per prompt)
-  const TODAY = new Date(2025, 11, 18) // Dec 18, 2025
-
-  // Calculate EMI
-  const monthlyRate = INTEREST_RATE / 12
-  const principal = loanAmount[0]
   const n = tenure[0]
+  const principal = loanAmount[0]
 
   const emi = React.useMemo(() => {
     if (principal === 0) return 0
     // EMI = P * r * (1 + r)^n / ((1 + r)^n - 1)
-    const exactEMI = (principal * monthlyRate * Math.pow(1 + monthlyRate, n)) / (Math.pow(1 + monthlyRate, n) - 1)
+    const exactEMI = (principal * MONTHLY_RATE * Math.pow(1 + MONTHLY_RATE, n)) / (Math.pow(1 + MONTHLY_RATE, n) - 1)
     return exactEMI
-  }, [principal, n, monthlyRate])
+  }, [principal, n])
 
   const totalRepayment = emi * n
   const totalInterest = totalRepayment - principal
@@ -78,7 +73,7 @@ export default function Dashboard() {
       dueDate = setDate(dueDate, 18)
 
       // Calculate Interest for this month
-      const interestComponent = balance * monthlyRate
+      const interestComponent = balance * MONTHLY_RATE
       const principalComponent = emi - interestComponent
       balance -= principalComponent
 
@@ -90,12 +85,8 @@ export default function Dashboard() {
       // If dueDate is before TODAY (and assuming we simulate real life where past due = overdue/paid):
       // We'll mark the LAST past due payment as 'Overdue' for demo, and others as 'Paid'.
       if (isBefore(dueDate, startOfDay(TODAY))) {
-        const isLastMonth = isAfter(dueDate, addMonths(TODAY, -1))
         // For demo: make the most recent past due payment 'Overdue' to show the badge
         // and older ones 'Paid'.
-        // Actually, if simulateMonthsPassed is 1, then installment 1 is overdue?
-        // If simulateMonthsPassed is 2, installment 1 Paid, 2 Overdue?
-        // This is a good demo strategy.
         if (i === simulateMonthsPassed[0]) {
           status = "Overdue"
           penalty = PENALTY_AMOUNT
@@ -119,7 +110,7 @@ export default function Dashboard() {
       })
     }
     return installments
-  }, [principal, emi, n, monthlyRate, simulateMonthsPassed, TODAY])
+  }, [principal, emi, n, simulateMonthsPassed])
 
   return (
     <div className="min-h-screen bg-background text-foreground font-sans selection:bg-primary/20">
@@ -179,7 +170,7 @@ export default function Dashboard() {
                 {/* Next payment is the first 'Pending' or 'Overdue' one */}
                 {format(schedule.find(s => s.status !== 'Paid')?.dueDate || addMonths(TODAY, 1), "MMM dd, yyyy")}
               </div>
-              <p className="text-xs text-muted-foreground">Don't miss the date</p>
+              <p className="text-xs text-muted-foreground">Don&apos;t miss the date</p>
             </CardContent>
           </Card>
 

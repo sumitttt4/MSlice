@@ -181,7 +181,7 @@ export default function LoginPage() {
                     </CardContent>
                     <CardFooter className="flex flex-col gap-4 text-center pb-8 border-t border-border/40 pt-6 bg-secondary/10">
                         <div className="text-sm text-muted-foreground">
-                            {isSignUp ? "Already have an account?" : "Don't have an account?"}{" "}
+                            {isSignUp ? "Already have an account?" : "Don&apos;t have an account?"}{" "}
                             <button
                                 onClick={() => setIsSignUp(!isSignUp)}
                                 className="text-primary font-medium hover:underline focus:outline-none"
