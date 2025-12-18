@@ -18,10 +18,10 @@ import {
 } from "@/components/ui/card"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
-import { Separator } from "@/components/ui/separator"
 
 export default function LoginPage() {
     const [isLoading, setIsLoading] = React.useState(false)
+    const [isSignUp, setIsSignUp] = React.useState(false)
     const [email, setEmail] = React.useState("")
     const [password, setPassword] = React.useState("")
 
@@ -38,31 +38,42 @@ export default function LoginPage() {
 
         if (error) {
             console.error(error)
-            toast.error("Login Failed", { description: error.message })
+            toast.error("Auth Failed", { description: error.message })
             setIsLoading(false)
         }
-        // Redirect happens automatically
     }
 
-    async function handleEmailLogin(e: React.FormEvent) {
+    async function handleEmailAuth(e: React.FormEvent) {
         e.preventDefault()
         setIsLoading(true)
 
-        const { error } = await supabase.auth.signInWithPassword({
-            email,
-            password
-        })
-
-        if (error) {
-            console.error(error)
-            // If password fails, maybe try magic link? 
-            // For now, let's keep it simple: Error toast.
-            toast.error("Login Failed", { description: error.message })
-            setIsLoading(false)
+        if (isSignUp) {
+            const { error } = await supabase.auth.signUp({
+                email,
+                password,
+                options: {
+                    emailRedirectTo: `${location.origin}/auth/callback`,
+                }
+            })
+            if (error) {
+                toast.error("Sign Up Failed", { description: error.message })
+                setIsLoading(false)
+            } else {
+                toast.success("Success!", { description: "Check your email for confirmation." })
+                setIsLoading(false)
+            }
         } else {
-            toast.success("Welcome back!", { description: "Redirecting to dashboard..." })
-            // Refresh to trigger middleware redirect
-            window.location.href = "/dashboard"
+            const { error } = await supabase.auth.signInWithPassword({
+                email,
+                password
+            })
+            if (error) {
+                toast.error("Login Failed", { description: error.message })
+                setIsLoading(false)
+            } else {
+                toast.success("Welcome back!", { description: "Redirecting..." })
+                window.location.href = "/dashboard"
+            }
         }
     }
 
@@ -84,9 +95,11 @@ export default function LoginPage() {
 
                 <Card className="border border-border/60 shadow-xl shadow-primary/5 bg-card/95 backdrop-blur-sm">
                     <CardHeader className="space-y-1 text-center pb-8">
-                        <CardTitle className="text-2xl font-bold tracking-tight">Welcome back</CardTitle>
+                        <CardTitle className="text-2xl font-bold tracking-tight">
+                            {isSignUp ? "Create account" : "Welcome back"}
+                        </CardTitle>
                         <CardDescription className="text-base">
-                            Sign in to your secure dashboard
+                            {isSignUp ? "Sign up to get started" : "Sign in to your secure dashboard"}
                         </CardDescription>
                     </CardHeader>
                     <CardContent className="space-y-6">
@@ -132,8 +145,8 @@ export default function LoginPage() {
                             </div>
                         </div>
 
-                        {/* Email Login - Secondary */}
-                        <form onSubmit={handleEmailLogin} className="space-y-4">
+                        {/* Email Login/SignUp Form */}
+                        <form onSubmit={handleEmailAuth} className="space-y-4">
                             <div className="space-y-2">
                                 <Label htmlFor="email">Email</Label>
                                 <Input
@@ -149,7 +162,7 @@ export default function LoginPage() {
                             <div className="space-y-2">
                                 <div className="flex items-center justify-between">
                                     <Label htmlFor="password">Password</Label>
-                                    <Link href="#" className="text-xs text-primary hover:underline">Forgot password?</Link>
+                                    {!isSignUp && <Link href="#" className="text-xs text-primary hover:underline">Forgot password?</Link>}
                                 </div>
                                 <Input
                                     id="password"
@@ -162,13 +175,19 @@ export default function LoginPage() {
                             </div>
                             <Button className="w-full h-11 text-base shadow-sm" type="submit" disabled={isLoading}>
                                 {isLoading && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
-                                Sign In
+                                {isSignUp ? "Sign Up" : "Sign In"}
                             </Button>
                         </form>
                     </CardContent>
                     <CardFooter className="flex flex-col gap-4 text-center pb-8 border-t border-border/40 pt-6 bg-secondary/10">
                         <div className="text-sm text-muted-foreground">
-                            Don't have an account? <Link href="/login" className="text-primary font-medium hover:underline">Sign up</Link>
+                            {isSignUp ? "Already have an account?" : "Don't have an account?"}{" "}
+                            <button
+                                onClick={() => setIsSignUp(!isSignUp)}
+                                className="text-primary font-medium hover:underline focus:outline-none"
+                            >
+                                {isSignUp ? "Sign in" : "Sign up"}
+                            </button>
                         </div>
                         <p className="text-xs text-muted-foreground max-w-xs mx-auto">
                             By clicking continue, you agree to our <Link href="#" className="underline">Terms</Link> and <Link href="#" className="underline">Privacy Policy</Link>.

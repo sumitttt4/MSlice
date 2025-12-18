@@ -15,7 +15,8 @@ import {
     X,
     AlertCircle,
     User,
-    Lock
+    Lock,
+    Moon
 } from "lucide-react"
 
 import { Button } from "@/components/ui/button"
@@ -59,63 +60,63 @@ export default function LandingPage() {
             />
 
             <div className="relative z-10">
-                {/* Navigation */}
-                <nav className="fixed top-0 left-0 right-0 z-50 bg-[#020617]/80 backdrop-blur-md border-b border-white/10">
-                    <div className="container mx-auto px-4 md:px-6">
-                        <div className="flex items-center justify-between h-16">
-                            {/* Logo */}
-                            <Link href="/" className="flex items-center gap-2">
-                                <div className="relative h-8 w-8">
-                                    <Image src="/logo.png" alt="Mslice Logo" fill className="object-contain" />
+                {/* Navigation - Pill Design */}
+                <div className="fixed top-0 left-0 right-0 z-50 flex justify-center pt-6 px-4">
+                    <nav className="w-full max-w-5xl bg-[#020617]/40 backdrop-blur-xl border border-white/10 rounded-2xl h-16 flex items-center justify-between px-6 shadow-2xl">
+                        {/* Logo */}
+                        <Link href="/" className="flex items-center gap-3">
+                            <div className="relative h-8 w-8 rounded-xl bg-gradient-to-tr from-emerald-500 to-teal-400 p-1.5 flex items-center justify-center">
+                                <div className="relative h-full w-full">
+                                    <Image src="/logo.png" alt="Mslice Logo" fill className="object-contain invert brightness-0" />
                                 </div>
-                                <span className="text-xl font-bold tracking-tight text-white">Mslice</span>
+                            </div>
+                            <span className="text-lg font-bold tracking-tight text-white hidden sm:block">Mslice</span>
+                        </Link>
+
+                        {/* Desktop Nav Links - Centered */}
+                        <div className="hidden md:flex items-center gap-8">
+                            <Link href="#how-it-works" className="text-sm font-medium text-slate-400 hover:text-white transition-colors">How it Works</Link>
+                            <Link href="#rates" className="text-sm font-medium text-slate-400 hover:text-white transition-colors">Rates</Link>
+                            <Link href="#security" className="text-sm font-medium text-slate-400 hover:text-white transition-colors">Security</Link>
+                        </div>
+
+                        {/* Auth Buttons */}
+                        <div className="flex items-center gap-3">
+                            <Link href="/login" className="hidden sm:block">
+                                <Button variant="ghost" className="text-sm font-medium text-slate-300 hover:text-white hover:bg-white/5 h-10">Log in</Button>
+                            </Link>
+                            <Link href="/login">
+                                <Button className="bg-[#f8fafc] hover:bg-white text-slate-950 font-semibold px-5 rounded-xl h-10 border-0 shadow-sm transition-all hover:scale-[1.02]">
+                                    Get Started
+                                </Button>
                             </Link>
 
-                            {/* Desktop Nav */}
-                            <div className="hidden md:flex items-center gap-8">
-                                <Link href="#how-it-works" className="text-sm font-medium text-slate-300 hover:text-emerald-400 transition-colors">How it Works</Link>
-                                <Link href="#rates" className="text-sm font-medium text-slate-300 hover:text-emerald-400 transition-colors">Rates</Link>
-                                <Link href="#security" className="text-sm font-medium text-slate-300 hover:text-emerald-400 transition-colors">Security</Link>
-                            </div>
-
-                            {/* Auth Buttons */}
-                            <div className="hidden md:flex items-center gap-4">
-                                <Link href="/login">
-                                    <Button variant="ghost" className="text-slate-300 hover:text-white hover:bg-white/10">Log in</Button>
-                                </Link>
-                                <Link href="/login">
-                                    <Button className="bg-emerald-600 hover:bg-emerald-700 text-white border-0">Get Started <ArrowRight className="ml-2 h-4 w-4" /></Button>
-                                </Link>
-                            </div>
-
                             {/* Mobile Menu Toggle */}
-                            <button className="md:hidden p-2 text-slate-300" onClick={() => setIsMenuOpen(!isMenuOpen)}>
-                                {isMenuOpen ? <X className="h-6 w-6" /> : <Menu className="h-6 w-6" />}
+                            <button className="md:hidden p-2 text-slate-300 ml-2" onClick={() => setIsMenuOpen(!isMenuOpen)}>
+                                {isMenuOpen ? <X className="h-5 w-5" /> : <Menu className="h-5 w-5" />}
                             </button>
                         </div>
-                    </div>
+                    </nav>
 
-                    {/* Mobile Nav */}
+                    {/* Mobile Nav Overlay */}
                     {isMenuOpen && (
                         <motion.div
-                            initial={{ opacity: 0, y: -20 }}
-                            animate={{ opacity: 1, y: 0 }}
-                            className="md:hidden bg-[#020617] border-b border-white/10 px-4 py-8 space-y-4"
+                            initial={{ opacity: 0, scale: 0.95 }}
+                            animate={{ opacity: 1, scale: 1 }}
+                            className="absolute top-24 left-4 right-4 bg-[#020617]/95 backdrop-blur-2xl border border-white/10 rounded-2xl p-6 flex flex-col gap-4 shadow-3xl md:hidden"
                         >
-                            <Link href="#how-it-works" className="block text-sm font-medium text-slate-300" onClick={() => setIsMenuOpen(false)}>How it Works</Link>
-                            <Link href="#rates" className="block text-sm font-medium text-slate-300" onClick={() => setIsMenuOpen(false)}>Rates</Link>
-                            <Link href="#security" className="block text-sm font-medium text-slate-300" onClick={() => setIsMenuOpen(false)}>Security</Link>
-                            <div className="pt-4 flex flex-col gap-2">
-                                <Link href="/login" onClick={() => setIsMenuOpen(false)}>
-                                    <Button variant="outline" className="w-full border-white/10 text-slate-300 hover:bg-white/10 hover:text-white">Log in</Button>
-                                </Link>
-                                <Link href="/login" onClick={() => setIsMenuOpen(false)}>
-                                    <Button className="w-full bg-emerald-600 hover:bg-emerald-700">Get Started</Button>
-                                </Link>
-                            </div>
+                            <Link href="#how-it-works" className="text-lg font-medium text-slate-300 py-2 border-b border-white/5" onClick={() => setIsMenuOpen(false)}>How it Works</Link>
+                            <Link href="#rates" className="text-lg font-medium text-slate-300 py-2 border-b border-white/5" onClick={() => setIsMenuOpen(false)}>Rates</Link>
+                            <Link href="#security" className="text-lg font-medium text-slate-300 py-2 border-b border-white/5" onClick={() => setIsMenuOpen(false)}>Security</Link>
+                            <Link href="/login" className="pt-2" onClick={() => setIsMenuOpen(false)}>
+                                <Button variant="outline" className="w-full border-white/10 text-slate-300 h-12 rounded-xl">Log in</Button>
+                            </Link>
+                            <Link href="/login" onClick={() => setIsMenuOpen(false)}>
+                                <Button className="w-full bg-white text-slate-950 h-12 rounded-xl font-bold">Get Started</Button>
+                            </Link>
                         </motion.div>
                     )}
-                </nav>
+                </div>
 
                 {/* Hero Section */}
                 <section className="relative pt-32 pb-20 md:pt-40 md:pb-32 overflow-hidden">

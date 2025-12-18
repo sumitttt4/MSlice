@@ -3,7 +3,9 @@
 import * as React from "react"
 import { addMonths, format, isAfter, isBefore, isSameDay, setDate, startOfDay } from "date-fns"
 import Image from "next/image"
-import { Bell, CreditCard, DollarSign, LayoutDashboard, User } from "lucide-react"
+import { Bell, CreditCard, DollarSign, LayoutDashboard, User, LogOut } from "lucide-react"
+import { createClient } from "@/utils/supabase/client"
+import { useRouter } from "next/navigation"
 
 import { Badge } from "@/components/ui/badge"
 import { Button } from "@/components/ui/button"
@@ -35,6 +37,14 @@ export default function Dashboard() {
   const [loanAmount, setLoanAmount] = React.useState([50000]) // Default 50k
   const [tenure, setTenure] = React.useState([12]) // Default 12 months
   const [simulateMonthsPassed, setSimulateMonthsPassed] = React.useState([0]) // For demoing overdue/paid status
+
+  const router = useRouter()
+  const supabase = createClient()
+
+  async function handleLogout() {
+    await supabase.auth.signOut()
+    router.push("/login")
+  }
 
   // Generated today (Dec 18, 2025 as per prompt)
   const TODAY = new Date(2025, 11, 18) // Dec 18, 2025
@@ -131,6 +141,9 @@ export default function Dashboard() {
             <div className="h-8 w-8 rounded-full bg-secondary flex items-center justify-center border hover:border-primary transition-colors cursor-pointer text-muted-foreground hover:text-foreground">
               <User className="h-4 w-4" />
             </div>
+            <Button variant="ghost" size="icon" onClick={handleLogout} className="text-muted-foreground hover:text-destructive transition-colors">
+              <LogOut className="h-5 w-5" />
+            </Button>
           </div>
         </div>
       </header>
