@@ -1,0 +1,141 @@
+@import "tailwindcss";
+
+@theme {
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --color-card: var(--card);
+  --color-card-foreground: var(--card-foreground);
+  --color-popover: var(--popover);
+  --color-popover-foreground: var(--popover-foreground);
+  --color-primary: var(--primary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-secondary: var(--secondary);
+  --color-secondary-foreground: var(--secondary-foreground);
+  --color-muted: var(--muted);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-accent: var(--accent);
+  --color-accent-foreground: var(--accent-foreground);
+  --color-destructive: var(--destructive);
+  --color-destructive-foreground: var(--destructive-foreground);
+  --color-border: var(--border);
+  --color-input: var(--input);
+  --color-ring: var(--ring);
+
+  --radius-lg: var(--radius);
+  --radius-md: calc(var(--radius) - 2px);
+  --radius-sm: calc(var(--radius) - 4px);
+
+  --animate-accordion-down: accordion-down 0.2s ease-out;
+  --animate-accordion-up: accordion-up 0.2s ease-out;
+
+  @keyframes accordion-down {
+    from {
+      height: 0
+    }
+
+    to {
+      height: var(--radix-accordion-content-height)
+    }
+  }
+
+  @keyframes accordion-up {
+    from {
+      height: var(--radix-accordion-content-height)
+    }
+
+    to {
+      height: 0
+    }
+  }
+}
+
+:root {
+  /* Premium Fintech Palette: Deep Emerald, Mint, White */
+  /* Base: Clean, Institutional White */
+  --background: hsl(0 0% 100%);
+  --foreground: hsl(164 40% 10%);
+  /* Very dark green-black */
+
+  /* Cards: White with subtle separation */
+  --card: hsl(0 0% 100%);
+  --card-foreground: hsl(164 40% 10%);
+
+  /* Popovers */
+  --popover: hsl(0 0% 100%);
+  --popover-foreground: hsl(164 40% 10%);
+
+  /* Primary: Deep Forest / Emerald */
+  --primary: hsl(164 80% 18%);
+  /* Rich, deep trust green */
+  --primary-foreground: hsl(0 0% 100%);
+
+  /* Secondary: Soft Mint / Institutional Grey-Green */
+  --secondary: hsl(164 30% 96%);
+  --secondary-foreground: hsl(164 80% 18%);
+
+  /* Muted: Subtle backgrounds */
+  --muted: hsl(164 20% 96%);
+  --muted-foreground: hsl(164 10% 40%);
+
+  /* Accent: Hover states, slight highlights */
+  --accent: hsl(164 30% 94%);
+  --accent-foreground: hsl(164 80% 18%);
+
+  /* Destructive: Restrained Red */
+  --destructive: hsl(0 60% 40%);
+  /* Darker, less alarming red */
+  --destructive-foreground: hsl(0 0% 98%);
+
+  /* Borders: Crisp, thin */
+  --border: hsl(164 20% 90%);
+  --input: hsl(164 20% 90%);
+  --ring: hsl(164 80% 18%);
+  /* Focus rings match primary */
+
+  /* Radius: Disciplined, modern (0.5rem = 8px usually) */
+  --radius: 0.5rem;
+}
+
+.dark {
+  /* Dark Mode: Deep Jungle / Midnight Green */
+  --background: hsl(164 40% 5%);
+  /* Very dark green, almost black */
+  --foreground: hsl(164 10% 98%);
+
+  --card: hsl(164 40% 7%);
+  /* Slightly lighter than bg */
+  --card-foreground: hsl(164 10% 98%);
+
+  --popover: hsl(164 40% 7%);
+  --popover-foreground: hsl(164 10% 98%);
+
+  --primary: hsl(164 60% 45%);
+  /* Brighter emerald for visibility on dark */
+  --primary-foreground: hsl(164 40% 5%);
+
+  --secondary: hsl(164 30% 15%);
+  --secondary-foreground: hsl(164 10% 98%);
+
+  --muted: hsl(164 30% 15%);
+  --muted-foreground: hsl(164 10% 60%);
+
+  --accent: hsl(164 30% 15%);
+  --accent-foreground: hsl(164 10% 98%);
+
+  --destructive: hsl(0 62.8% 30.6%);
+  --destructive-foreground: hsl(0 0% 98%);
+
+  --border: hsl(164 30% 20%);
+  --input: hsl(164 30% 20%);
+  --ring: hsl(164 60% 45%);
+}
+
+@layer base {
+  * {
+    @apply border-border outline-ring/50;
+  }
+
+  body {
+    @apply bg-background text-foreground;
+  }
+}
