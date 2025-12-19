@@ -86,6 +86,15 @@
   --ring: 158 82% 39%;
 
   --radius: 0.5rem;
+
+  --status-success: 158 82% 39%;
+  /* #10B981 */
+  --status-fail: 0 84% 60%;
+  /* #EF4444 */
+  --status-pending: 215 25% 62%;
+  /* #94A3B8 used as neutral/pending, or use amber for warning */
+  --status-warning: 38 92% 50%;
+  /* #F59E0B */
 }
 
 .dark {
