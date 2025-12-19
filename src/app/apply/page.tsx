@@ -5,22 +5,22 @@ export const dynamic = "force-dynamic";
 import * as React from "react"
 import Link from "next/link"
 import { useSearchParams, useRouter } from "next/navigation"
-import { ArrowRight, CheckCircle, AlertCircle, Shield, Clock } from "lucide-react"
+import { ArrowRight, CheckCircle, AlertCircle, Shield, ArrowLeft } from "lucide-react"
 
 import { Button } from "@/components/ui/button"
 import { Card, CardContent } from "@/components/ui/card"
 import { Separator } from "@/components/ui/separator"
 import { Badge } from "@/components/ui/badge"
 
-function ApplyContent() {
+function ConfirmLoanContent() {
     const searchParams = useSearchParams()
     const router = useRouter()
 
     const amount = Number(searchParams.get('amount')) || 15000
     const tenure = Number(searchParams.get('tenure')) || 12
 
-    const INTEREST_RATE = 0.16
-    const monthlyRate = INTEREST_RATE / 12
+    const MONTHLY_RATE = 0.16 // 16% per month
+    const monthlyRate = MONTHLY_RATE
 
     const emi = React.useMemo(() => {
         if (amount === 0) return 0
@@ -30,8 +30,8 @@ function ApplyContent() {
     const totalPayment = emi * tenure
     const totalInterest = totalPayment - amount
 
-    function handleContinue() {
-        router.push(`/login?amount=${amount}&tenure=${tenure}`)
+    function handleConfirm() {
+        router.push(`/dashboard?amount=${amount}&tenure=${tenure}`)
     }
 
     return (
@@ -45,8 +45,8 @@ function ApplyContent() {
                         </div>
                         <span className="font-semibold text-lg text-white">Mslice</span>
                     </Link>
-                    <h1 className="text-xl sm:text-2xl font-bold text-white">Your Loan Summary</h1>
-                    <p className="text-sm text-zinc-400">Review your loan details before proceeding</p>
+                    <h1 className="text-xl sm:text-2xl font-bold text-white">Confirm Your Loan</h1>
+                    <p className="text-sm text-zinc-400">Review details before confirming</p>
                 </div>
 
                 {/* Loan Summary Card */}
@@ -74,10 +74,10 @@ function ApplyContent() {
                             </div>
                             <div className="flex justify-between text-sm">
                                 <span className="text-zinc-400">Monthly EMI</span>
-                                <span className="font-medium text-white">₹{Math.round(emi).toLocaleString()}</span>
+                                <span className="font-medium text-emerald-400">₹{Math.round(emi).toLocaleString()}</span>
                             </div>
                             <div className="flex justify-between text-sm">
-                                <span className="text-zinc-400">Total Interest</span>
+                                <span className="text-zinc-400">Total Interest (16%)</span>
                                 <span className="font-medium text-white">₹{Math.round(totalInterest).toLocaleString()}</span>
                             </div>
                             <Separator className="bg-zinc-800" />
@@ -102,23 +102,33 @@ function ApplyContent() {
                             <div className="flex items-start gap-3 text-sm">
                                 <AlertCircle className="h-4 w-4 text-amber-500 mt-0.5 flex-shrink-0" />
                                 <span className="text-zinc-400">
-                                    <strong className="text-white">₹300</strong> late payment fee if EMI is missed
+                                    <strong className="text-white">₹300</strong> late payment fee per missed EMI
                                 </span>
                             </div>
                         </div>
                     </CardContent>
                 </Card>
 
-                {/* CTA */}
-                <Button
-                    className="w-full h-12 bg-emerald-500 hover:bg-emerald-600 text-white font-medium"
-                    onClick={handleContinue}
-                >
-                    Continue to Login <ArrowRight className="ml-2 h-4 w-4" />
-                </Button>
+                {/* CTAs */}
+                <div className="space-y-3">
+                    <Button
+                        className="w-full h-12 bg-emerald-500 hover:bg-emerald-600 text-white font-medium"
+                        onClick={handleConfirm}
+                    >
+                        Confirm & Get Loan <ArrowRight className="ml-2 h-4 w-4" />
+                    </Button>
+
+                    <Button
+                        variant="outline"
+                        className="w-full h-12 border-zinc-700 bg-transparent text-zinc-300 hover:bg-zinc-800 hover:text-white"
+                        onClick={() => router.push('/')}
+                    >
+                        <ArrowLeft className="mr-2 h-4 w-4" /> Change Amount
+                    </Button>
+                </div>
 
                 <p className="text-xs text-center text-zinc-500">
-                    By continuing, you agree to our Terms of Service.
+                    By confirming, you agree to our Terms of Service.
                 </p>
 
                 {/* Trust */}
@@ -128,8 +138,8 @@ function ApplyContent() {
                         <span>256-bit SSL</span>
                     </div>
                     <div className="flex items-center gap-1">
-                        <Clock className="h-3 w-3" />
-                        <span>60s Approval</span>
+                        <CheckCircle className="h-3 w-3" />
+                        <span>Instant Approval</span>
                     </div>
                 </div>
             </div>
@@ -144,7 +154,7 @@ export default function ApplyPage() {
                 <div className="animate-pulse text-white">Loading...</div>
             </div>
         }>
-            <ApplyContent />
+            <ConfirmLoanContent />
         </React.Suspense>
     )
 }

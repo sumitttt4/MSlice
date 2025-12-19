@@ -8,7 +8,6 @@ import { useSearchParams, useRouter } from "next/navigation"
 import { addMonths, format, isBefore, startOfDay } from "date-fns"
 import {
   User,
-  LogOut,
   CreditCard,
   Calendar,
   AlertTriangle,
@@ -20,10 +19,9 @@ import {
   Bell,
   ArrowRight,
   Calculator,
-  Download,
-  X
+  X,
+  Home
 } from "lucide-react"
-import { createClient } from "@/utils/supabase/client"
 import { toast } from "sonner"
 
 import { Button } from "@/components/ui/button"
@@ -41,14 +39,12 @@ import {
 import { cn } from "@/lib/utils"
 
 // Constants
-const INTEREST_RATE = 0.16
+const MONTHLY_RATE = 0.16 // 16% per month
 const PENALTY_AMOUNT = 300
-const MONTHLY_RATE = INTEREST_RATE / 12
 
 function DashboardContent() {
   const searchParams = useSearchParams()
   const router = useRouter()
-  const supabase = createClient()
 
   // State
   const [loanAmount, setLoanAmount] = React.useState<number | null>(null)
@@ -67,11 +63,20 @@ function DashboardContent() {
         const urlTenure = searchParams.get('tenure')
 
         if (urlAmount && urlTenure) {
-          // User came from apply flow - loan starts TODAY
+          // User came with loan parameters - loan starts TODAY
           setLoanAmount(Number(urlAmount))
           setTenure(Number(urlTenure))
           setLoanStartDate(new Date())
           setHasLoan(true)
+
+          // Save to localStorage
+          localStorage.setItem('mslice_loan', JSON.stringify({
+            amount: Number(urlAmount),
+            tenure: Number(urlTenure),
+            startDate: new Date().toISOString(),
+            paidEmis: []
+          }))
+
           toast.success("Loan approved!", { description: `₹${Number(urlAmount).toLocaleString()} disbursed to your account.` })
         } else {
           // Check localStorage for existing loan
@@ -94,7 +99,7 @@ function DashboardContent() {
     initializeDashboard()
   }, [searchParams])
 
-  // Save loan to localStorage when it changes
+  // Save loan to localStorage when paid EMIs change
   React.useEffect(() => {
     if (hasLoan && loanAmount && tenure && loanStartDate) {
       localStorage.setItem('mslice_loan', JSON.stringify({
@@ -104,12 +109,7 @@ function DashboardContent() {
         paidEmis: paidEmis
       }))
     }
-  }, [hasLoan, loanAmount, tenure, loanStartDate, paidEmis])
-
-  async function handleLogout() {
-    await supabase.auth.signOut()
-    router.push("/login")
-  }
+  }, [paidEmis, hasLoan, loanAmount, tenure, loanStartDate])
 
   // EMI Calculation
   const emi = React.useMemo(() => {
@@ -191,9 +191,11 @@ function DashboardContent() {
               </div>
               <span className="font-semibold text-lg text-white">Mslice</span>
             </Link>
-            <Button variant="ghost" size="icon" onClick={handleLogout} className="text-zinc-400 hover:text-white">
-              <LogOut className="h-5 w-5" />
-            </Button>
+            <Link href="/">
+              <Button variant="ghost" size="icon" className="text-zinc-400 hover:text-white">
+                <Home className="h-5 w-5" />
+              </Button>
+            </Link>
           </div>
         </header>
 
@@ -374,9 +376,11 @@ function DashboardContent() {
             <div className="h-8 w-8 bg-zinc-800 rounded-full hidden sm:flex items-center justify-center">
               <User className="h-4 w-4 text-zinc-400" />
             </div>
-            <Button variant="ghost" size="icon" onClick={handleLogout} className="text-zinc-400 hover:text-white">
-              <LogOut className="h-5 w-5" />
-            </Button>
+            <Link href="/">
+              <Button variant="ghost" size="icon" className="text-zinc-400 hover:text-white">
+                <Home className="h-5 w-5" />
+              </Button>
+            </Link>
           </div>
         </div>
       </header>

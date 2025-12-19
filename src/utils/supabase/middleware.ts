@@ -36,32 +36,7 @@ export async function updateSession(request: NextRequest) {
         }
     )
 
-    // IMPORTANT: Avoid writing any logic between createServerClient and
-    // supabase.auth.getUser(). A simple mistake could make it very hard to debug
-    // issues with users being randomly logged out.
-
-    const {
-        data: { user },
-    } = await supabase.auth.getUser()
-
-    if (
-        !user &&
-        !request.nextUrl.pathname.startsWith('/auth') &&
-        request.nextUrl.pathname !== '/' &&
-        request.nextUrl.pathname !== '/login'
-    ) {
-        // no user, potentially respond by redirecting the user to the login page
-        const url = request.nextUrl.clone()
-        url.pathname = '/'
-        return NextResponse.redirect(url)
-    }
-
-    // If user is logged in and tries to access root, redirect to dashboard
-    if (user && request.nextUrl.pathname === '/') {
-        const url = request.nextUrl.clone()
-        url.pathname = '/dashboard'
-        return NextResponse.redirect(url)
-    }
-
+    // Allow all public routes - no authentication required
+    // The app is now public without login
     return supabaseResponse
 }

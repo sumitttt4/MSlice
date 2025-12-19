@@ -34,8 +34,8 @@ export default function LandingPage() {
     const [tenure, setTenure] = React.useState([12])
     const [mobileMenuOpen, setMobileMenuOpen] = React.useState(false)
 
-    const INTEREST_RATE = 0.16
-    const monthlyRate = INTEREST_RATE / 12
+    const MONTHLY_RATE = 0.16 // 16% per month
+    const monthlyRate = MONTHLY_RATE
 
     const emi = React.useMemo(() => {
         const p = loanAmount[0]
@@ -90,31 +90,27 @@ export default function LandingPage() {
                     </div>
 
                     <div className="flex items-center gap-3">
-                        <Link href="/login" className="hidden sm:block">
-                            <Button variant="ghost" size="sm" className="text-zinc-400 hover:text-white">Sign In</Button>
-                        </Link>
-                        <Link href="/login">
+                        <a href="#calculator">
                             <Button size="sm" className="bg-emerald-500 hover:bg-emerald-600 text-white">Apply Now</Button>
-                        </Link>
+                        </a>
                         <button className="md:hidden p-2 text-zinc-400" onClick={() => setMobileMenuOpen(!mobileMenuOpen)}>
                             {mobileMenuOpen ? <X className="h-5 w-5" /> : <Menu className="h-5 w-5" />}
                         </button>
                     </div>
                 </nav>
 
-                {/* Mobile Menu */}
                 {mobileMenuOpen && (
                     <div className="md:hidden bg-zinc-900 border-t border-zinc-800 p-4 space-y-3">
                         <Link href="#features" className="block text-sm text-zinc-300 py-2" onClick={() => setMobileMenuOpen(false)}>Features</Link>
                         <Link href="#how-it-works" className="block text-sm text-zinc-300 py-2" onClick={() => setMobileMenuOpen(false)}>How it Works</Link>
                         <Link href="#faq" className="block text-sm text-zinc-300 py-2" onClick={() => setMobileMenuOpen(false)}>FAQ</Link>
-                        <Link href="/login" className="block text-sm text-zinc-300 py-2" onClick={() => setMobileMenuOpen(false)}>Sign In</Link>
+                        <a href="#calculator" className="block text-sm text-emerald-400 py-2 font-medium" onClick={() => setMobileMenuOpen(false)}>Apply Now</a>
                     </div>
                 )}
             </header>
 
             {/* Hero Section */}
-            <section className="py-12 sm:py-16 lg:py-24">
+            <section id="calculator" className="py-12 sm:py-16 lg:py-24">
                 <div className="container max-w-6xl mx-auto px-4 sm:px-6">
                     <div className="grid lg:grid-cols-2 gap-8 lg:gap-16 items-start">
                         {/* Left: Content */}
@@ -206,12 +202,16 @@ export default function LandingPage() {
                                 <Separator className="bg-zinc-800" />
 
                                 {/* EMI Display */}
-                                <div className="bg-zinc-900 rounded-xl p-4 sm:p-5 text-center space-y-1">
-                                    <p className="text-sm text-zinc-400">You pay</p>
-                                    <p className="text-3xl sm:text-4xl font-bold text-white">
-                                        ₹{Math.round(emi).toLocaleString()}
-                                        <span className="text-base sm:text-lg font-normal text-zinc-500">/month</span>
-                                    </p>
+                                <div className="bg-zinc-900 rounded-xl p-4 sm:p-5 text-center space-y-3">
+                                    <div className="flex items-center justify-center gap-2">
+                                        <span className="text-xs bg-emerald-500/20 text-emerald-400 px-3 py-1 rounded-full font-medium">16% Interest Rate</span>
+                                    </div>
+                                    <div>
+                                        <p className="text-sm text-zinc-400 mb-1">Monthly EMI</p>
+                                        <p className="text-3xl sm:text-4xl font-bold text-white">
+                                            ₹{Math.round(emi).toLocaleString()}
+                                        </p>
+                                    </div>
                                 </div>
 
                                 {/* Breakdown */}
@@ -233,7 +233,7 @@ export default function LandingPage() {
                                 {/* CTA */}
                                 <Button
                                     className="w-full h-12 bg-emerald-500 hover:bg-emerald-600 text-white font-medium text-base"
-                                    onClick={() => router.push(`/login?amount=${loanAmount[0]}&tenure=${tenure[0]}`)}
+                                    onClick={() => router.push(`/apply?amount=${loanAmount[0]}&tenure=${tenure[0]}`)}
                                 >
                                     Check Eligibility <ArrowRight className="ml-2 h-4 w-4" />
                                 </Button>
